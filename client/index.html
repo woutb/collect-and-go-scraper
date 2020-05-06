@@ -1,0 +1,58 @@
+<html>
+    <head>
+        <title>Collect-&-Go Scraper</title>
+        <link rel="stylesheet" type="text/css" href="css/main.css">
+    </head>
+    <body>
+        <h2 class='title'>Collect-&-Go Scraper</h2>
+
+        <h1>Zoek Colruyt</h1>
+        <input class="colruyt-loc" type="text" placeholder="Zoek een locatie..." />
+        <button type="submit" onclick="submitLocation()">submit</button>
+        
+        <div class="container"></div>
+
+        <script>
+
+            function submitLocation() {
+                const colruytLocation = document.querySelector('.colruyt-loc').value;
+                fetch('http://localhost:3000/locations', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ colruytLocation})
+                })    
+            }
+
+            function newEl(type, attrs={}) {
+                const el = document.createElement(type);
+                for (let attr in attrs) {
+                    const value = attrs[attr];
+                    if (attr == 'innerText') el.innerText = value;
+                    else el.setAttribute(attr, value);
+                }
+                return el;
+            }
+
+            async function loadLocations() {
+                const res = await fetch('http://localhost:3000/locations');
+                const locations = await res.json();
+
+                const ctr = document.querySelector('.container');
+
+                locations.forEach(location => {
+                    const card = newEl('div', {class: 'card'});
+                    const title = newEl('h4', {innerText: location.name});
+                    const status = newEl('p', {innerText: location.status});
+                    card.appendChild(title);
+                    card.appendChild(status);
+                    ctr.appendChild(card);
+                })
+            }
+
+            loadLocations();
+
+        </script>
+    </body>
+</html>
