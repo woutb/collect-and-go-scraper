@@ -26,3 +26,9 @@ To be continued...
 
 
 ![blocking-page-screenshot](/server/example.png)
+
+## Run
+
+> collect-and-go-scraper>node ./server/index.js
+
+> collect-and-go-scraper>start ./client/index.html
